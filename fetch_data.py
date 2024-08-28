@@ -14,6 +14,9 @@ def query_pid_data(pid, start_time):
             timestamp = datetime.strptime(row['timestamp'], '%Y-%m-%d %H:%M:%S')
             if int(row['pid']) == pid and timestamp >= start_time:
                 total_power_consumed += float(row['power_consumption_w'])
+            # Debug information
+            print(f"Checking row: PID={row['pid']}, Timestamp={timestamp}, Power={row['power_consumption_w']} , {start_time}")
+            print(f"Row included: {int(row['pid']) == pid and timestamp >= start_time}")
     return total_power_consumed
 
 def parse_frequency(frequency):
