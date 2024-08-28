@@ -1,0 +1,25 @@
+# Power Consumption Monitoring API
+
+This project provides a Flask-based API for monitoring and querying the power consumption of specific processes over time, using the `powertop` tool. The API can be used to retrieve power consumption data for a given process ID (PID) over a specified time range (e.g., minutes, hours, days).
+
+## Features
+
+- **Continuous Monitoring:** The application logs power consumption data from `powertop` every minute.
+- **Data Purging:** Logs older than 24 hours are automatically purged to maintain a manageable dataset.
+- **API Access:** A Flask-based API allows querying the total power consumption of a specific process (PID) over a specified time range.
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.x
+- Flask
+- `powertop` (must be installed on the system)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/aweSAM12/power-top.git
+   cd power-top
