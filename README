@@ -21,5 +21,5 @@ This project provides a Flask-based API for monitoring and querying the power co
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/aweSAM12/power-top.git
-   cd power-top
+   git clone https://github.com/aweSAM12/power-analysis-tool.git
+   cd power-analysis-tool
