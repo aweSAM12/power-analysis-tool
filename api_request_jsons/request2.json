@@ -1,0 +1,6 @@
+{
+    "command": "sh /home/user/samarth/power-analysis-tool/test_app2.sh",
+    "frequency": "60000",
+    "timeout": 60000
+
+}

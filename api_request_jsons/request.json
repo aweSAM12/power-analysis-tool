@@ -1,0 +1,4 @@
+{
+    "command": "sh /home/user/samarth/power-analysis-tool/test_app.sh",
+    "frequency": "2000"
+}
