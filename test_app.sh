@@ -1,1 +1,0 @@
-stress -c 8 

@@ -1,0 +1,4 @@
+curl -X POST -H "Content-Type: application/json" -d @/home/user/samarth/power-analysis-tool/api_request_jsons/json_from_server.json http://127.0.0.1:5000/start_monitoring
+
+
+curl -X POST -H "Content-Type: application/json" -d @/home/user/samarth/power-analysis-tool/api_request_jsons/json_from_server.json http://192.168,1.24:5000/start_monitoring

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Power Consumption Plot</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Power Consumption Data</h1>
+    <form id="queryForm">
+        <label for="app_name">App Name:</label>
+        <input type="text" id="app_name" name="app_name" required>
+        <label for="client_name">Client Name:</label>
+        <input type="text" id="client_name" name="client_name" required>
+        <label for="frequency">Time Range:</label>
+        <select id="frequency" name="Time" required>
+            <option value="30m">30 Minutes</option>
+            <option value="1h">1 Hour</option>
+            <option value="2h">2 Hours</option>
+            <option value="5h">5 Hours</option>
+            <option value="10h">10 Hours</option>
+            <option value="24h">24 Hours</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="plot"></div>
+    <script>
+        document.getElementById('queryForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const app_name = document.getElementById('app_name').value;
+            const client_name = document.getElementById('client_name').value;
+            const frequency = document.getElementById('frequency').value;
+
+            const response = await fetch(`/power?frequency=${frequency}&app_name=${app_name}&client_name=${client_name}`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error fetching data:', errorData);
+                alert(errorData.error || 'An error occurred');
+                return;
+            }
+
+            const data = await response.json();
+            if (!data || !data.data) {
+                alert('No data received');
+                return;
+            }
+
+            plotData(data.data);
+        });
+
+        // function plotData(data) {
+        //     const traces = [];
+        //     let allY = [];
+        //     let allX = [];
+            
+        //     // Collect all data points for calculating the mean
+        //     for (const [hour, entries] of Object.entries(data)) {
+        //         const x = entries.map(entry => new Date(entry.timestamp));
+        //         const y = entries.map(entry => entry.power_consumption_w);
+        //         allY = allY.concat(y);
+        //         allX = allX.concat(x);
+        //     }
+
+        //     // Calculate the mean of power consumption
+        //     const meanY = allY.length > 0 ? allY.reduce((a, b) => a + b, 0) / allY.length : 0;
+            
+        //     // Create a trace for the mean line
+        //     const meanLine = {
+        //         x: allX,  // Same X values as the original data
+        //         y: Array(allX.length).fill(meanY),  // A constant line at the mean value
+        //         mode: 'lines',
+        //         line: { color: 'blue', dash: 'dash' },  // Dashed blue line for the mean
+        //         name: 'Mean'
+        //     };
+            
+        //     // Separate data points above and below the mean
+        //     const aboveMean = { x: [], y: [], mode: 'lines+markers', line: { color: 'red' }, marker: { color: 'red' }, name: 'Above Mean' };
+        //     const belowMean = { x: [], y: [], mode: 'lines+markers', line: { color: 'green' }, marker: { color: 'green' }, name: 'Below Mean' };
+            
+        //     let prevAbove = null;
+
+        //     // Classify each point as above or below the mean and create two distinct traces
+        //     for (let i = 0; i < allY.length; i++) {
+        //         if (allY[i] > meanY) {
+        //             aboveMean.x.push(allX[i]);
+        //             aboveMean.y.push(allY[i]);
+                    
+        //             // if (prevAbove === false) {
+        //             //     belowMean.x.push(allX[i]);
+        //             //     belowMean.y.push(allY[i]);  // Connects with the point just below mean
+        //             // }
+        //             prevAbove = true;
+        //         } else {
+        //             belowMean.x.push(allX[i]);
+        //             belowMean.y.push(allY[i]);
+                    
+        //             // if (prevAbove === true) {
+        //             //     aboveMean.x.push(allX[i]);
+        //             //     aboveMean.y.push(allY[i]);  // Connects with the point just above mean
+        //             // }
+        //             prevAbove = false;
+        //         }
+        //     }
+            
+        //     // Add the mean line, aboveMean, and belowMean traces to the plot
+        //     traces.push(meanLine);
+        //     traces.push(aboveMean);
+        //     traces.push(belowMean);
+            
+        //     // Plot the data
+        //     Plotly.newPlot('plot', traces, {
+        //         title: 'Power Consumption Over Time',
+        //         xaxis: { title: 'Timestamp' },
+        //         yaxis: { title: 'Power Consumption (W)' }
+        //     });
+        // }
+
+        function plotData(data) {
+    const traces = [];
+    let allY = [];
+    let allX = [];
+
+    // Collect all data points for calculating the mean
+    for (const [hour, entries] of Object.entries(data)) {
+        const x = entries.map(entry => new Date(entry.timestamp));
+        const y = entries.map(entry => entry.power_consumption_w);
+        allY = allY.concat(y);
+        allX = allX.concat(x);
+    }
+
+    // Calculate the mean of power consumption
+    const meanY = allY.length > 0 ? allY.reduce((a, b) => a + b, 0) / allY.length : 0;
+
+    // Create traces for below and above average
+    const belowMean = {
+        x: allX,
+        y: allY.map(value => value <= meanY ? value : null),
+        mode: 'lines+markers',
+        line: { color: 'green' },
+        name: 'Below Average'
+    };
+
+    const aboveMean = {
+        x: allX,
+        y: allY.map(value => value > meanY ? value : null),
+        mode: 'lines+markers',
+        line: { color: 'red' },
+        name: 'Above Average'
+    };
+
+    // Create a trace for the mean line
+    const meanLine = {
+        x: allX,
+        y: Array(allX.length).fill(meanY),
+        mode: 'lines',
+        line: { color: 'blue', dash: 'dash' },
+        name: `Average (${meanY.toFixed(2)} W)`
+    };
+
+    // Add the traces to the plot
+    traces.push(belowMean);
+    traces.push(aboveMean);
+    traces.push(meanLine);
+
+    // Plot the data
+    Plotly.newPlot('plot', traces, {
+        title: 'Power Consumption Over Time',
+        xaxis: { title: 'Timestamp' },
+        yaxis: { title: 'Power Consumption (W)' },
+        xaxis: { tickformat: '%Y-%m-%d %H:%M', tickangle: -45 },
+        template: 'plotly_white',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        margin: { l: 40, r: 40, t: 40, b: 40 }
+    });
+}
+
+        
+
+    </script>
+</body>
+</html>
