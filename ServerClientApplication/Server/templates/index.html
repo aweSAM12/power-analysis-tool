@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trigger Monitoring</title>
+</head>
+<body>
+    <h1>Trigger Monitoring</h1>
+    <form action="/start_monitoring" method="post">
+        <label for="command">Command:</label>
+        <input type="text" id="command" name="command" required><br><br>
+        
+        <label for="frequency">Frequency:</label>
+        <input type="number" id="frequency" name="frequency" required><br><br>
+        
+        <label for="timeout">Timeout:</label>
+        <input type="number" id="timeout" name="timeout" required><br><br>
+        
+        <label for="server_url">Server URL:</label>
+        <input type="text" id="server_url" name="server_url" required><br><br>
+
+        <label for="server_url">Client URL:</label>
+        <input type="text" id="client_url" name="client_url" required><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+    "command": "sh /samarth/power-analysis-tool/ServerClientApplication/test_app.sh",
+    "frequency": 1000,
+    "timeout": 10,
+    "server_url": "http://172.18.0.2:5001/upload_csv"
+}

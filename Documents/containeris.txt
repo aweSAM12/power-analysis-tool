@@ -1,0 +1,10 @@
+
+------------------------------------------------------------------------------------------------------------------------------
+
+podman build -t client_app .
+podman run -d --privileged -p 5000:5000 -d --net my_network --ip 172.18.0.3 --name client_container client_app
+podman logs client_container 
+
+--------------------------------------------------------------------------------------------------------------------------------
+podman network create --subnet=172.18.0.0/16 my_network
+  347  podman run -d --privileged -p 5001:5001 -d --net my_network --ip 172.18.0.2 --name server_container server_app
