@@ -22,8 +22,6 @@ Clone the project repository to both client and server systems.
 Step 2: Install Dependencies
 
 Install the necessary dependencies for both client and server applications:
-
-bash
     
     pip install -r requirements.txt
 
@@ -39,18 +37,14 @@ Step 4: Run the Client Application
 
 To start monitoring power consumption on the client:
 
-bash
-
-python3 client.py
+    python3 client.py
 
 This will initialize the PowerConsumptionMonitor and make the client ready to receive API calls for starting monitoring.
 Step 5: Run the Server Application
 
 Start the server to handle client uploads, data management, and data visualization:
 
-bash
-
-python3 server.py
+    python3 server.py
 
 Step 6: Access Endpoints
 
