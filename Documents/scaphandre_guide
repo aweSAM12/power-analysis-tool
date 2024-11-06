@@ -1,0 +1,81 @@
+Install ------>       https://www.wonderingchimp.com/demoing-scaphandre/
+
+
+scaphandre stdout --help
+Write the metrics to the terminal
+
+Usage: scaphandre stdout [OPTIONS]
+
+Options:
+  -t, --timeout <TIMEOUT>            Maximum time spent measuring, in seconds. If negative, runs forever [default: 10]
+  -s, --step <SECONDS>               Interval between two measurements, in seconds [default: 2]
+  -p, --processes <PROCESSES>        Maximum number of processes to display [default: 5]
+  -r, --regex-filter <REGEX_FILTER>  Filter processes based on regular expressions (example: 'scaph\\w\\w.e')
+      --containers                   Monitor and apply labels for processes running as containers
+  -q, --qemu                         Apply labels to metrics of processes looking like a Qemu/KVM virtual machine
+      --raw-metrics                  Display metrics with their names
+  -h, --help                         Print help
+
+
+Here’s a breakdown of each scaphandre stdout flag with examples:
+
+    -t, --timeout <TIMEOUT>: Limits the measurement time. A value of -1 runs indefinitely.
+    Example: sudo scaphandre stdout -t 30 runs for 30 seconds.
+
+    -s, --step <SECONDS>: Sets intervals between measurements.
+    Example: sudo scaphandre stdout -s 5 captures data every 5 seconds.
+
+    -p, --processes <PROCESSES>: Limits displayed processes.
+    Example: sudo scaphandre stdout -p 20 shows the top 20 consumers.
+
+    -r, --regex-filter <REGEX_FILTER>: Filters processes matching a regular expression.
+    Example: sudo scaphandre stdout -r 'nginx' filters results to processes with "nginx."
+
+    --containers: Adds labels for containerized processes.
+    Example: sudo scaphandre stdout --containers shows container-based power metrics.
+
+    -q, --qemu: Labels metrics from Qemu/KVM virtual machines.
+    Example: sudo scaphandre stdout -q isolates Qemu/KVM VMs in the output.
+
+    --raw-metrics: Outputs metrics with detailed names.
+    Example: sudo scaphandre stdout --raw-metrics includes metric names in output.
+
+    -h, --help: Displays help for command options.
+    Example: sudo scaphandre stdout --help shows available options.
+
+
+ ![alt text](image.png)
+
+<filesystem type="mount" accessmode="passthrough">
+  <source dir="/var/lib/libvirt/scaphandre/DIR_NAME"/>
+  <target dir="scaphandre"/>
+  <alias name="fs0"/>
+  <address type="pci" domain="0x0000" bus="0x07" slot="0x00" function="0x0"/>
+</filesystem>
+
+
+on VM   
+mount -t 9p -o trans=virtio scaphandre /var/scaphandre
+
+on Hypervisor
+ sudo /usr/lib/qemu/virtiofsd --socket-path=/var/run/vhost-user-fs.sock --shared-dir=/var/lib/libvirt/scaphandre/ubuntu24.04
+
+ mount -t tmpfs tmpfs_DIR_NAME /var/lib/libvirt/scaphandre/DIR_NAME -o size=10m
+
+ sudo /usr/lib/qemu/virtiofsd --socket-path=/var/run/vhost-user-fs.sock --shared-dir=/var/lib/libvirt/scaphandre/DIR_NAME
+
+
+https://hubblo-org.github.io/scaphandre-documentation/references/exporter-qemu.html
+
+
+Ensure intel_rapl and virtiofs
+Run
+    lsmod | grep intel_rapl
+    lsmod | grep virtiofs 
+if no output then,
+    modprobe intel_rapl
+    modprobe virtiofs
+
+
+
+

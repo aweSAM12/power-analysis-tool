@@ -28,3 +28,4 @@ EXPOSE 5000
 
 # Set the default command to run your Python script
 CMD ["python", "client.py"]
+ 
