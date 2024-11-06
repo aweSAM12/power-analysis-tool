@@ -80,7 +80,7 @@ class PowerConsumptionMonitor:
         process.wait()
         stdout_thread.join()
         stderr_thread.join()
-
+    
     def upload_csv(self):
         print("Uploading CSV ---------------------------------")
         with open("power_consumption.csv", "rb") as f:
