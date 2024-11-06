@@ -16,8 +16,8 @@ Clone the project repository to both client and server systems.
 
 bash
 
-git clone <repository_url>
-cd <repository_name>
+git clone https://github.com/aweSAM12/power-analysis-tool.git
+cd https://github.com/aweSAM12/power-analysis-tool.git
 
 Step 2: Install Dependencies
 
