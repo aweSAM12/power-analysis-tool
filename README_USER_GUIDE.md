@@ -14,18 +14,18 @@ Step 1: Clone the Repository
 
 Clone the project repository to both client and server systems.
 
-bash
 
-git clone https://github.com/aweSAM12/power-analysis-tool.git
-cd https://github.com/aweSAM12/power-analysis-tool.git
+
+    git clone https://github.com/aweSAM12/power-analysis-tool.git
+    cd https://github.com/aweSAM12/power-analysis-tool.git
 
 Step 2: Install Dependencies
 
 Install the necessary dependencies for both client and server applications:
 
 bash
-
-pip install -r requirements.txt
+    
+    pip install -r requirements.txt
 
 Step 3: Configure Client
 
